@@ -168,7 +168,7 @@ public class InvertedIndexSearch {
     }
     
     public static String[] getListOfWords(String content) {
-        content = content.replaceAll("[^a-z]", " ").toLowerCase();
+        content = content.toLowerCase().replaceAll("[^a-z0-9]", " ");
         return content.split("\\s+");
     }
     
