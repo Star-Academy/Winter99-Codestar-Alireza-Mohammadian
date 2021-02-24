@@ -13,13 +13,13 @@ public class FileReader {
     }
 
     public HashMap<String, String> readContent() {
-        HashMap<String, String> filesContents = new HashMap<String, String>();
+        var filesContents = new HashMap<String, String>();
         for (File file : this.getFiles()) {
             try {
-                Scanner scanner = new Scanner(file);
-                StringBuilder content = new StringBuilder();
+                var scanner = new Scanner(file);
+                var content = new StringBuilder();
                 while (scanner.hasNextLine()) {
-                    content.append(" " + scanner.nextLine());
+                    content.append(" ").append(scanner.nextLine());
                 }
                 filesContents.put(file.getName(), content.toString());
                 scanner.close();

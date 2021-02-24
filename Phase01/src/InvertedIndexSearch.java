@@ -35,9 +35,9 @@ public class InvertedIndexSearch {
     }
 
     private HashSet<Entry> searchQuery(String query) {
-        HashSet<Entry> normalSet = new HashSet<Entry>(allDocs);
-        HashSet<Entry> plusSet = new HashSet<Entry>();
-        HashSet<Entry> minusSet = new HashSet<Entry>();
+        var normalSet = new HashSet<Entry>(allDocs);
+        var plusSet = new HashSet<Entry>();
+        var minusSet = new HashSet<Entry>();
         for (String normalStr : this.seperatQuery(" " + query, NORMAL_PATTERN))
             normalSet.retainAll(searchWord(normalStr));
         for (String plusStr : this.seperatQuery(query, PLUS_PATTERN))
@@ -48,7 +48,7 @@ public class InvertedIndexSearch {
     }
 
     private HashSet<Entry> searchWord(String word) {
-        HashSet<Entry> result = new HashSet<Entry>();
+        var result = new HashSet<Entry>();
         String word_s = "";
         if (word.charAt(word.length() - 1) == 's') {
             word_s = word.substring(0, word.length() - 1);
@@ -66,7 +66,7 @@ public class InvertedIndexSearch {
 
     private HashSet<Entry> combineResults(HashSet<Entry> normalSet, HashSet<Entry> plusSet, HashSet<Entry> minusSet) {
         // add normal set, Intersect plus set, Minus minus set'
-        HashSet<Entry> result = new HashSet<Entry>();
+        var result = new HashSet<Entry>();
         result.addAll(normalSet);
         result.addAll(plusSet);
         result.removeAll(minusSet);
@@ -74,7 +74,7 @@ public class InvertedIndexSearch {
     }
 
     private ArrayList<String> seperatQuery(String query, String regex) {
-        ArrayList<String> words = new ArrayList<String>();
+        var words = new ArrayList<String>();
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(query);
         while (matcher.find()) {

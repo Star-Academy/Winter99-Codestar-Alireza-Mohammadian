@@ -11,10 +11,9 @@ public class Main {
 
     public static void main(String[] args) {
         FileReader fileReader = new FileReader(DATA_PATH);
-        HashMap<String, String> fileContents = fileReader.readContent();
-        InvertedIndexSearch invertedIndexSearch = new InvertedIndexSearch(fileContents);
-
-        Scanner scanner = new Scanner(System.in);
+        var fileContents = fileReader.readContent();
+        var invertedIndexSearch = new InvertedIndexSearch(fileContents);
+        var scanner = new Scanner(System.in);
         String inputStr = "";
         while (true) {
             System.out.println(WELCOME_MASSAGE);

@@ -13,13 +13,13 @@ public class Result {
     
     @Override
     public String toString() {
-        StringBuilder resultStr = new StringBuilder("");
+        var resultStr = new StringBuilder("");
         if (this.resultSet.isEmpty()) {
             resultStr.append("No result found");
         } else {
             if (this.isQuery) {
                 for(Entry entry : resultSet){
-                    resultStr.append(" " + entry.getdocName());
+                    resultStr.append(" " + entry.getDocName());
                 }
             } else {
                 resultStr.append(this.resultSet.toString());

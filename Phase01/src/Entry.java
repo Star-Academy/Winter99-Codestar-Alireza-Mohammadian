@@ -9,7 +9,7 @@ class Entry {
         this.index = index;
     }
     
-    public String getdocName() {
+    public String getDocName() {
         return this.docName;
     }
     
