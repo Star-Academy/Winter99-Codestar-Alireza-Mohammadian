@@ -14,20 +14,31 @@ import java.util.regex.Pattern;
 
 public class InvertedIndexSearch {
 
+    static class StopWordsClass {
+        private static final Set<String> STOP_WORDS = new HashSet<>(Arrays.asList("ourselves", "hers", "between",
+                "yourself", "but", "again", "there", "about", "once", "during", "out", "very", "having", "with", "they",
+                "own", "an", "be", "some", "for", "do", "its", "yours", "such", "into", "of", "most", "itself", "other",
+                "off", "is", "s", "am", "or", "who", "as", "from", "him", "each", "the", "themselves", "until", "below",
+                "are", "we", "these", "your", "his", "through", "don", "nor", "me", "were", "her", "more", "himself",
+                "this", "down", "should", "our", "their", "while", "above", "both", "up", "to", "ours", "had", "she",
+                "all", "no", "when", "at", "any", "before", "them", "same", "and", "been", "have", "in", "will", "on",
+                "does", "yourselves", "then", "that", "because", "what", "over", "why", "so", "can", "did", "not",
+                "now", "under", "he", "you", "herself", "has", "just", "where", "too", "only", "myself", "which",
+                "those", "i", "after", "few", "whom", "t", "being", "if", "theirs", "my", "against", "a", "by", "doing",
+                "it", "how", "further", "was", "here", "than"));
+
+        public static Set<String> getStopWords() {
+            return STOP_WORDS;
+        }
+    }
+
     private HashMap<String, ArrayList<Entry>> indexMap = new HashMap<String, ArrayList<Entry>>();
     private HashSet<Entry> allDocs = new HashSet<Entry>();
-    // private HashMap<String, String> fileContents = new HashMap<String, String>();
-    private final Set<String> stopWords = new HashSet<>(Arrays.asList("ourselves", "hers", "between", "yourself", "but",
-            "again", "there", "about", "once", "during", "out", "very", "having", "with", "they", "own", "an", "be",
-            "some", "for", "do", "its", "yours", "such", "into", "of", "most", "itself", "other", "off", "is", "s",
-            "am", "or", "who", "as", "from", "him", "each", "the", "themselves", "until", "below", "are", "we", "these",
-            "your", "his", "through", "don", "nor", "me", "were", "her", "more", "himself", "this", "down", "should",
-            "our", "their", "while", "above", "both", "up", "to", "ours", "had", "she", "all", "no", "when", "at",
-            "any", "before", "them", "same", "and", "been", "have", "in", "will", "on", "does", "yourselves", "then",
-            "that", "because", "what", "over", "why", "so", "can", "did", "not", "now", "under", "he", "you", "herself",
-            "has", "just", "where", "too", "only", "myself", "which", "those", "i", "after", "few", "whom", "t",
-            "being", "if", "theirs", "my", "against", "a", "by", "doing", "it", "how", "further", "was", "here",
-            "than"));
+    private static final String NORMAL_PATTERN = "\\s(\\w+)";
+    private static final String PLUS_PATTERN = "\\+(\\w+)";
+    private static final String MINUS_PATTERN = "-(\\w+)";
+    private static final String NOT_WORDS_PATTERN = "[^a-z0-9]";
+    private static final String SPACE_PATTERN = "\\s+";
 
     public InvertedIndexSearch(HashMap<String, String> fileContents) {
         for (String id : fileContents.keySet()) {
@@ -45,15 +56,33 @@ public class InvertedIndexSearch {
     }
 
     private HashSet<Entry> searchQuery(String query) {
-        HashSet<Entry> normalSet = new HashSet<Entry>(allDocs), plusSet = new HashSet<Entry>(),
-                minusSet = new HashSet<Entry>();
-        for (String normalStr : this.seperatQuery(" " + query, "\\s(\\w+)"))
+        HashSet<Entry> normalSet = new HashSet<Entry>(allDocs);
+        HashSet<Entry> plusSet = new HashSet<Entry>();
+        HashSet<Entry> minusSet = new HashSet<Entry>();
+        for (String normalStr : this.seperatQuery(" " + query, NORMAL_PATTERN))
             normalSet.retainAll(searchWord(normalStr));
-        for (String plusStr : this.seperatQuery(query, "\\+(\\w+)"))
+        for (String plusStr : this.seperatQuery(query, PLUS_PATTERN))
             plusSet.addAll(searchWord(plusStr));
-        for (String minusStr : this.seperatQuery(query, "-(\\w+)"))
+        for (String minusStr : this.seperatQuery(query, MINUS_PATTERN))
             minusSet.addAll(searchWord(minusStr));
         return this.combineResults(normalSet, plusSet, minusSet);
+    }
+
+    private HashSet<Entry> searchWord(String word) {
+        HashSet<Entry> result = new HashSet<Entry>();
+        String word_s = "";
+        if (word.charAt(word.length() - 1) == 's') {
+            word_s = word.substring(0, word.length() - 1);
+        } else {
+            word_s = word + "s";
+        }
+        if (indexMap.containsKey(word)) {
+            result.addAll(indexMap.get(word));
+        }
+        if (indexMap.containsKey(word_s)) {
+            result.addAll(indexMap.get(word_s));
+        }
+        return result;
     }
 
     private HashSet<Entry> combineResults(HashSet<Entry> normalSet, HashSet<Entry> plusSet, HashSet<Entry> minusSet) {
@@ -75,28 +104,11 @@ public class InvertedIndexSearch {
         return words;
     }
 
-    private HashSet<Entry> searchWord(String word) {
-        HashSet<Entry> result = new HashSet<Entry>();
-        String word_s = "";
-        if (word.charAt(word.length() - 1) == 's') {
-            word_s = word.substring(0, word.length() - 1);
-        } else {
-            word_s = word + "s";
-        }
-        if (indexMap.containsKey(word)) {
-            result.addAll(indexMap.get(word));
-        }
-        if (indexMap.containsKey(word_s)) {
-            result.addAll(indexMap.get(word_s));
-        }
-        return result;
-    }
-
     private void addWords(String id, String content) {
         String[] listOfWords = getListOfWords(content);
         for (int i = 0; i < listOfWords.length; i++) {
             String word = listOfWords[i];
-            if (stopWords.contains(word))
+            if (StopWordsClass.getStopWords().contains(word))
                 continue;
             if (indexMap.containsKey(word)) {
                 indexMap.get(word).add(new Entry(id, i + 1));
@@ -107,8 +119,8 @@ public class InvertedIndexSearch {
     }
 
     private String[] getListOfWords(String content) {
-        content = content.toLowerCase().replaceAll("[^a-z0-9]", " ");
-        return content.split("\\s+");
+        content = content.toLowerCase().replaceAll(NOT_WORDS_PATTERN, " ");
+        return content.split(SPACE_PATTERN);
     }
 
 }
