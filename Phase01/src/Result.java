@@ -5,12 +5,12 @@ import java.util.HashSet;
 public class Result {
     private HashSet<Entry> resultSet = new HashSet<Entry>();
     private boolean isQuery;
-    
+
     public Result(HashSet<Entry> resultSet, boolean isQuery) {
         this.resultSet = resultSet;
         this.isQuery = isQuery;
     }
-    
+
     @Override
     public String toString() {
         var resultStr = new StringBuilder("");
@@ -18,7 +18,7 @@ public class Result {
             resultStr.append("No result found");
         } else {
             if (this.isQuery) {
-                for(Entry entry : resultSet){
+                for (Entry entry : resultSet) {
                     resultStr.append(" " + entry.getDocName());
                 }
             } else {
@@ -27,10 +27,9 @@ public class Result {
         }
         return resultStr.toString();
     }
-    
-    public HashSet<Entry> getResultSet(){
+
+    public HashSet<Entry> getResultSet() {
         return this.resultSet;
     }
 
-    
 }

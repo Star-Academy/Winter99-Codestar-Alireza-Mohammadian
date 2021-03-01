@@ -24,7 +24,7 @@ public class InvertedIndexSearch {
         }
     }
 
-    public HashMap<String, ArrayList<Entry>> getIndexMap(){
+    public HashMap<String, ArrayList<Entry>> getIndexMap() {
         return this.indexMap;
     }
 

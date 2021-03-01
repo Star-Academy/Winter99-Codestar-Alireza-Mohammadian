@@ -1,5 +1,7 @@
 package Phase01.test;
 
+import Phase01.src.*;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
@@ -14,7 +16,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import Phase01.src.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,8 +31,8 @@ public class InvertedIndexSearchTest {
     @BeforeEach
     public void createObject() throws Exception {
         var contents = new HashMap<String, String>();
-        contents.put("testData1.txt", "hello world..");
-        contents.put("testData2.txt", "foo? bar!!!");
+        contents.put("testData1.txt", "hello hello world..");
+        contents.put("testData2.txt", "foo?  i bars!!! him");
         this.iiSearch = new InvertedIndexSearch(contents);
     }
 
@@ -43,7 +44,7 @@ public class InvertedIndexSearchTest {
         when(result2.getResultSet()).thenReturn(QUERY_TEST_RESULT);
 
         assertEquals(iiSearch.search("hello").getResultSet(), (result1.getResultSet()));
-        assertEquals(iiSearch.search("hello +bar").getResultSet(), (result2.getResultSet()));
+        assertEquals(iiSearch.search("hello +bars -doesntExist").getResultSet(), (result2.getResultSet()));
     }
 
     @Test
@@ -88,5 +89,4 @@ public class InvertedIndexSearchTest {
         assertTrue(Arrays.equals(iiSearch.getListOfWords("$234 hell*garden*33 why %#REZA"),
                 new String[] { "234", "hell", "garden", "33", "why", "reza" }));
     }
-
 }

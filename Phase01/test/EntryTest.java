@@ -11,27 +11,30 @@ public class EntryTest {
     private Entry entry;
 
     @BeforeEach
-    public void createObject() throws Exception{
+    public void createObject() throws Exception {
         entry = new Entry("test", 11);
     }
 
     @Test
-    public void toStringTest(){
-       
+    public void getIndexTest() {
+        assertEquals(entry.getIndex(), 11);
+    }
+
+    @Test
+    public void toStringTest() {
         assertEquals(entry.toString(), "Document Id: test, Index: 11");
     }
 
     @Test
-    public void equalsTest(){
+    public void equalsTest() {
         Entry obj = new Entry("test", 11);
-        assertEquals(obj.equals(entry) , true);
+        assertEquals(obj.equals(entry), true);
+        assertEquals(obj.equals("test"), false);
     }
 
     @Test
-    public void hashCodeTest(){
-        assertEquals(entry.hashCode() , "test".hashCode());
+    public void hashCodeTest() {
+        assertEquals(entry.hashCode(), "test".hashCode());
     }
-
-
 
 }

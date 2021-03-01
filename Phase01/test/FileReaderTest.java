@@ -1,6 +1,7 @@
 package Phase01.test;
 
 import Phase01.src.FileReader;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
@@ -13,16 +14,16 @@ public class FileReaderTest {
     final String PATH = "Phase01/data/Test-Data";
 
     @BeforeEach
-    public void createObject() throws Exception{
+    public void createObject() throws Exception {
         fileReader = new FileReader(PATH);
     }
-    
+
     @Test
-    public void toStringTest(){ 
+    public void readContentTest() {
         var contents = new HashMap<String, String>();
         contents.put("testData1.txt", "hello world..");
         contents.put("testData2.txt", "foo? bar!!!");
         assertTrue(fileReader.readContent().equals(contents));
     }
-    
+
 }
