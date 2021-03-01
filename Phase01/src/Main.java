@@ -1,7 +1,5 @@
 package Phase01.src;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Scanner;
 
 public class Main {
@@ -22,6 +20,7 @@ public class Main {
                 break;
             System.out.println(invertedIndexSearch.search(inputStr));
         }
+        scanner.close();
     }
 
 }

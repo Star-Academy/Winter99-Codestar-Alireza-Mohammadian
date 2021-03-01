@@ -31,4 +31,6 @@ public class Result {
     public HashSet<Entry> getResultSet(){
         return this.resultSet;
     }
+
+    
 }
