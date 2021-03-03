@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "MhZyjuOtBN1jm02Lip7i+rmqbGAg6/7EeL121EmT8S2WNUsQmdEPG8Su+9IE8aX6wIqk8K+jD0+OSb+8kc5b0Q==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Asus\\Documents\\Codestar\\Winter99-Codestar-Alireza-Mohammadian\\Phase04\\console-app\\console-app.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Asus\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
+    "C:\\Users\\Asus\\.nuget\\packages\\system.text.json\\5.0.1\\system.text.json.5.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
