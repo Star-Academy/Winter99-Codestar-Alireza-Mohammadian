@@ -1,4 +1,5 @@
 using Xunit;
+using System;
 
 namespace library.Test
 {
@@ -37,6 +38,13 @@ namespace library.Test
         public void EqualsTestFalse(string docName, int index)
         {
             Assert.False(this.entry.Equals(new Entry(docName, index)));
+        }
+
+        [Fact]
+        public void EqualsTestFalseDifferentType()
+        {
+            Assert.False(this.entry.Equals(new object()));
+            Assert.False(this.entry.Equals("test"));
         }
 
         [Fact]

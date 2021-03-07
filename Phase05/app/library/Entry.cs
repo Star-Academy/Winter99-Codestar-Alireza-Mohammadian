@@ -19,7 +19,6 @@ namespace library
         
         public override bool Equals(object obj)
         {
-
             if (obj == null || GetType() != obj.GetType())
             {
                 return false;
@@ -31,7 +30,6 @@ namespace library
         
         public override int GetHashCode()
         {
-            
             return this.DocName.GetHashCode();
         }
     }
