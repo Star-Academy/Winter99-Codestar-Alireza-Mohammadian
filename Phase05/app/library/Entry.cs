@@ -16,18 +16,16 @@ namespace library
         {
             return "Document Id: " + this.DocName + ", Index: " + this.Index;
         }
-        
+
         public override bool Equals(object obj)
         {
             if (obj == null || GetType() != obj.GetType())
             {
                 return false;
             }
-            
-            return this.DocName.Equals (((Entry)obj).DocName);
+            return this.DocName.Equals(((Entry)obj).DocName);
         }
-        
-        
+
         public override int GetHashCode()
         {
             return this.DocName.GetHashCode();

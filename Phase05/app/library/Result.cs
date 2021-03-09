@@ -6,34 +6,32 @@ namespace library
 {
     public class Result
     {
-        public HashSet<Entry> resultSet { set; get; } = new HashSet<Entry>();
+        public virtual HashSet<Entry> ResultSet { get; set; }
         public bool isQuery { get; set; }
 
-        public Result(HashSet<Entry> resultSet, bool isQuery)
+        public Result(HashSet<Entry> ResultSet, bool isQuery)
         {
-            this.resultSet = resultSet;
+            this.ResultSet = ResultSet;
             this.isQuery = isQuery;
         }
+        public Result() { }
 
         public override string ToString()
         {
             var resultStr = new StringBuilder("");
-            if (this.resultSet.Count ==  0) {
+            if (this.ResultSet.Count == 0)
                 resultStr.Append("No result found");
-            } else {
-                if (this.isQuery) {
-                    foreach(Entry entry in resultSet){
+            else
+            {
+                if (this.isQuery)
+                {
+                    foreach (Entry entry in ResultSet)
                         resultStr.Append(" " + entry.DocName);
-                    }
-                } else {
-                    
-                    // foreach(Entry entry in resultSet){
-                    //     //resultStr.Append(" " + entry.DocName +);//[Document Id: test2, Index: 14, Document Id: test1, Index: 11]"
-                    // }
-                    resultStr.Append(string.Join(", ", this.resultSet));
                 }
+                else
+                    resultStr.Append(string.Join(", ", this.ResultSet));
             }
-        return resultStr.ToString();
+            return resultStr.ToString();
         }
     }
 }
