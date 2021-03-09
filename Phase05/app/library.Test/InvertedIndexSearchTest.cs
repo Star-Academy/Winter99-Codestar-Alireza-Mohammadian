@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Collections.Generic;
 using Moq;
 using Xunit;
@@ -72,12 +71,8 @@ namespace library.Test
         [Fact]
         public void SearchTest()
         {
-            var result1 = new Mock<Result>();  
-            var result2 = new Mock<Result>();  
-            result1.SetupGet(x => x.ResultSet).Returns(word_test_result);  
-            result2.SetupGet(x => x.ResultSet).Returns(query_test_result);  
-            Assert.Equal(invertedIndexSearch.Search("hello").ResultSet, (result1.Object.ResultSet));
-            Assert.Equal(invertedIndexSearch.Search("hello +bars -doesntExist").ResultSet, (result2.Object.ResultSet));
+            Assert.Equal(invertedIndexSearch.Search("hello").ResultSet, word_test_result);
+            Assert.Equal(invertedIndexSearch.Search("hello +bars -doesntExist").ResultSet, query_test_result);
         }
     }
 }
