@@ -40,10 +40,10 @@ namespace library.Test
         public void SeperateQueryTest()
         {
             string inputStr = " hello +ali -go +majid +r";
-            Assert.Equal(invertedIndexSearch.SeperateQuery(inputStr, @"\+(\w+)"),
+            Assert.Equal(invertedIndexSearch.SeperateQuery(inputStr, InvertedIndexSearch.PLUS_PATTERN),
                     new List<string> { "ali", "majid", "r" });
-            Assert.Equal(invertedIndexSearch.SeperateQuery(inputStr, @"\-(\w+)"), new List<string> { "go" });
-            Assert.Equal(invertedIndexSearch.SeperateQuery(inputStr, @"\s(\w+)"), new List<string> { "hello" });
+            Assert.Equal(invertedIndexSearch.SeperateQuery(inputStr, InvertedIndexSearch.MINUS_PATTERN), new List<string> { "go" });
+            Assert.Equal(invertedIndexSearch.SeperateQuery(inputStr, InvertedIndexSearch.NORMAL_PATTERN), new List<string> { "hello" });
         }
 
         [Fact]
