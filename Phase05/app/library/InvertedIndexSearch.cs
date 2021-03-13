@@ -65,15 +65,15 @@ namespace library
         public HashSet<Entry> SearchWord(string word)
         {
             var result = new HashSet<Entry>();
-            string word_s;
+            string wordComplement;
             if (word.EndsWith("s"))
-                word_s = word.Remove(word.Length - 1);
+                wordComplement = word.Remove(word.Length - 1);
             else
-                word_s = word + "s";
+                wordComplement = word + "s";
             if (IndexMap.ContainsKey(word))
                 result.UnionWith(IndexMap[word]);
-            if (IndexMap.ContainsKey(word_s))
-                result.UnionWith(IndexMap[word_s]);
+            if (IndexMap.ContainsKey(wordComplement))
+                result.UnionWith(IndexMap[wordComplement]);
             return result;
         }
         public HashSet<Entry> SearchQuery(string query)
