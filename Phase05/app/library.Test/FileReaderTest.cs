@@ -7,7 +7,7 @@ namespace library.Test
     public class FileReaderTest
     {
         private FileReader fileReader;
-        const string PATH = "..\\..\\..\\..\\data\\Test-Data";
+        const string PATH = "..\\..\\..\\..\\Test-Data";
         public FileReaderTest()
         {
             fileReader = new FileReader(PATH);
