@@ -1,5 +1,3 @@
-using System.IO;
-using System.Collections;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 
@@ -7,9 +5,8 @@ namespace library
 {
     public class InvertedIndexSearch
     {
-        public Dictionary<string, List<Entry>> IndexMap { get; set; } = new Dictionary<string, List<Entry>>();
-        public HashSet<Entry> allDocs { get; set; } = new HashSet<Entry>();
-        public static string SPACE_PATTERN1 => SPACE_PATTERN;
+        public Dictionary<string, List<Entry>> IndexMap { get;  } = new Dictionary<string, List<Entry>>();
+        public HashSet<Entry> allDocs { get; } = new HashSet<Entry>();
         public const string NORMAL_PATTERN = @"\s(\w+)";
         public const string PLUS_PATTERN = @"\+(\w+)";
         public const string MINUS_PATTERN = @"-(\w+)";
