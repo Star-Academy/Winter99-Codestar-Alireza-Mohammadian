@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <PackageId>StarAcademy.Team21.InvertedIndexSearch</PackageId>
+    <Authors>Alireza Mohammadian</Authors>
+    <Company>Star Academy</Company>
   </PropertyGroup>
 
 </Project>
