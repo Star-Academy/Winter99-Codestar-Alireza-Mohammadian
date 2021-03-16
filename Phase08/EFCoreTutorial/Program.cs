@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace EFCoreTutorial
 {
@@ -11,13 +10,13 @@ namespace EFCoreTutorial
 
                 var std = new Student()
                 {
-                     Name = "T",
+                    Name = "Ken",
                 };
 
                 context.Students.Add(std);
                 context.SaveChanges();
 
-                var test = context.Students.FirstOrDefault();
+                var test = context.Students.Where(s => s.Name == "Ken").Single();
                 System.Console.WriteLine(test.Name);
             }
         }
