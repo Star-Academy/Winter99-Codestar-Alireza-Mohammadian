@@ -29,7 +29,4 @@ namespace SearchLibrary
             return this.DocumentName.GetHashCode();
         }
     }
-
-
-
 }

@@ -1,6 +1,4 @@
-using System.Linq;
 using System.Text;
-
 using System.Collections.Generic;
 namespace SearchLibrary
 {
@@ -8,7 +6,7 @@ namespace SearchLibrary
     {
         public readonly HashSet<Entry> ResultSet;
         public readonly bool IsQuery;
-
+        
         public Result(HashSet<Entry> ResultSet, bool IsQuery)
         {
             this.ResultSet = ResultSet;

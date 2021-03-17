@@ -7,24 +7,26 @@ namespace SearchLibrary
 {
     public class InvertedIndexSearch
     {
-
         public const string NORMAL_PATTERN = @"\s(\w+)";
         public const string PLUS_PATTERN = @"\+(\w+)";
         public const string MINUS_PATTERN = @"-(\w+)";
         private const string NOT_WORDS_PATTERN = @"[^a-z0-9]";
         private const string SPACE_PATTERN = @"\s+";
         private SearchContext Context { get; }
+
         public InvertedIndexSearch(SearchContext Context, bool createMap)
         {
             this.Context = Context;
             if (createMap)
                 CreateIndexMap();
         }
+
         public void CreateIndexMap()
         {
             foreach (var document in Context.Documents.ToList())
                 AddWords(document.DocumentName, GetListOfWords(document.Content));
         }
+
         public HashSet<Entry> CombineResults(HashSet<Entry> normalSet, HashSet<Entry> plusSet, HashSet<Entry> minusSet)
         {
             var result = new HashSet<Entry>();
@@ -63,11 +65,13 @@ namespace SearchLibrary
             }
             Context.SaveChanges();
         }
+
         public string[] GetListOfWords(string content)
         {
             content = Regex.Replace(content.ToLower(), NOT_WORDS_PATTERN, " ").Trim();
             return Regex.Split(content, SPACE_PATTERN);
         }
+
         public HashSet<Entry> SearchWord(string word)
         {
             var result = new HashSet<Entry>();
@@ -94,6 +98,7 @@ namespace SearchLibrary
                 Index = 0
             }).ToList();
         }
+        
         public HashSet<Entry> SearchQuery(string query)
         {
             var normalSet = new HashSet<Entry>(GetAllDocsName());

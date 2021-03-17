@@ -8,12 +8,13 @@ namespace SearchLibrary
         public DbSet<Document> Documents { get; set; }
         public DbSet<IndexMap> IndexMaps { get; set; }
         public DbSet<Entry> Entries { get; set; }
-
         private string server;
+
         public SearchContext(string server)
         {
             this.server = server;
         }
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(String.Format(@"Server={0};Database=SearchDB;Trusted_Connection=True;", server));
