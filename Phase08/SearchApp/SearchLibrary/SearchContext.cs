@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 
 namespace SearchLibrary
@@ -8,9 +9,14 @@ namespace SearchLibrary
         public DbSet<IndexMap> IndexMaps { get; set; }
         public DbSet<Entry> Entries { get; set; }
 
+        private string server;
+        public SearchContext(string server)
+        {
+            this.server = server;
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=localhost;Database=SearchDB;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer(String.Format(@"Server={0};Database=SearchDB;Trusted_Connection=True;", server));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

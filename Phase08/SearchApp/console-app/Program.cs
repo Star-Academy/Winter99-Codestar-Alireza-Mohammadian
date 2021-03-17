@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.ComponentModel.Design.Serialization;
+using System;
 using System.IO;
 using System.Linq;
 using SearchLibrary;
@@ -8,45 +9,21 @@ namespace console_app
 {
     class Program
     {
+        private const string WELCOME_MASSAGE = "Enter search word or enter 'exit()' to end: ";
+        private const string EXIT_COMMAND = "exit()";
+        private const string SERVER = "localhost";
+
         static void Main(string[] args)
-        {
-            using (var context = new SearchContext()) {
-                var path = "data/EnglishData";
-                var fr = new FileReader(path);
-                var docs = fr.ReadContent();
-                var documentsList = new List<Document>();
-                foreach (var doc in docs){
-                    var tempDoc =new Document(){
-                        DocumentName = doc.Key ,
-                        Content = doc.Value
-                    };
-                    documentsList.Add(tempDoc);
-                }
-                context.Documents.AddRange(documentsList);
-                context.SaveChanges();  
+        { 
+            var invertedIndexSearch = new InvertedIndexSearch(new SearchContext(SERVER), false);
+            while (true)
+            {
+                System.Console.WriteLine((WELCOME_MASSAGE));
+                var inputString = System.Console.ReadLine();
+                if (inputString.Equals(EXIT_COMMAND))
+                    break;
+                System.Console.WriteLine(invertedIndexSearch.Search(inputString));
             }
-        }
-        
-    }
-
-    public class FileReader
-    {
-        public string path { get; set; }
-        public FileReader(string path)
-        {
-            this.path = path;
-        }
-
-        public Dictionary<string, string> ReadContent()
-        {
-            var filesContent = new Dictionary<string, string>();
-            System.Array.ForEach(this.GetFiles(), file => filesContent.Add(file.Split("\\").Last(), File.ReadAllText(file).Trim()));
-            return filesContent;
-        }
-
-        public string[] GetFiles()
-        {
-            return Directory.GetFiles(path);
         }
     }
 }
