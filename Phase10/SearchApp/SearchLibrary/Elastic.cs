@@ -1,9 +1,6 @@
-﻿using System.Globalization;
-using System.Net.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Elasticsearch.Net;
 using Nest;
 
 
@@ -18,9 +15,7 @@ namespace SearchLibrary
         public Elastic(string indexName, Uri uri)
         {
             IndexName = indexName;
-            Client = this.CreateClient(uri);
-            // Console.WriteLine($"{Client.Ping()}");
-            
+            Client = this.CreateClient(uri);            
         }
 
         public ElasticClient CreateClient(Uri uri)
@@ -30,9 +25,9 @@ namespace SearchLibrary
             return new ElasticClient(connectionSettings);
         }
 
-        public ISearchResponse<T> GetResponseOfQuery<T>(QueryContainer queryContainer) where T : class
+        public ISearchResponse<T> GetResponseOfQuery<T>(QueryContainer queryContainer, int size=20) where T : class
         {
-            return Client.Search<T>(s => s.Index(IndexName).Query(q => queryContainer));
+            return Client.Search<T>(s => s.Index(IndexName).Query(q => queryContainer).Size(size));
         }
         public static QueryContainer MakeFuzzyQuery(string query, string field, int fuzziness = -1)
         {
@@ -45,7 +40,7 @@ namespace SearchLibrary
             return fuzzyQuery;
         }
 
-        public static QueryContainer MakeMatchQuery(string query, string field, int fuzziness = 1)
+        public static QueryContainer MakeMatchQuery(string query, string field, int fuzziness = 0)
         {
             QueryContainer matchQuery = new MatchQuery
             {
