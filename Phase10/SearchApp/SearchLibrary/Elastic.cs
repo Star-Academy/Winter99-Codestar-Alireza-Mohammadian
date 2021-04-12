@@ -18,7 +18,7 @@ namespace SearchLibrary
             Client = this.CreateClient(uri);            
         }
 
-        public ElasticClient CreateClient(Uri uri)
+        public ElasticClient CreateClient(Uri uri) 
         {
             var connectionSettings = new ConnectionSettings(uri);
             connectionSettings.EnableDebugMode();
@@ -178,19 +178,16 @@ namespace SearchLibrary
         }
 
 
-        public ResponseBase CreateIndex<T>(Func<IndexSettingsDescriptor, IPromise<IIndexSettings>> settingSelector,
-            Func<TypeMappingDescriptor<T>, ITypeMapping> mapSelector) where T : class
+        public ResponseBase CreateIndex<T>(Func<IndexSettingsDescriptor, IPromise<IIndexSettings>> settingSelector = null,
+            Func<TypeMappingDescriptor<T>, ITypeMapping> mapSelector = null) where T : class
         {
             var response = Client.Indices.Create(IndexName,
                 s => s.Settings(settingSelector).Map<T>(mapSelector));
             return response;
         }
 
-        public ResponseBase CreateIndex<T>(Func<TypeMappingDescriptor<T>, ITypeMapping> mapSelector) where T : class
-        {
-            var response = Client.Indices.Create(IndexName,
-                                s => s.Map<T>(mapSelector));
-            return response;
+        public ResponseBase DeleteIndex(){
+            return Client.Indices.Delete(IndexName);
         }
 
         public BulkResponse BulkIndex<T>(List<T> dataList , string idFieldName) where T : class

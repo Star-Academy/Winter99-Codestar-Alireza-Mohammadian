@@ -7,13 +7,14 @@ namespace SearchLibrary
 {
     public class SearchEngine
     {
-        private readonly Elastic elastic;
-        private const string INDEX_NAME = "documents";
-        public SearchEngine(Uri uri, bool indexCreated)
+        public readonly Elastic elastic;
+        public string IndexName {get;}
+        public SearchEngine(string indexName ,Uri uri, bool indexCreated)
         {
-            elastic = new Elastic(INDEX_NAME, uri);
+            IndexName = indexName;
+            elastic = new Elastic(indexName, uri);
             if (!indexCreated)
-                elastic.CreateIndex<Document>(CreateMapping).Validate();
+                elastic.CreateIndex<Document>(mapSelector: CreateMapping).Validate();
         }
 
         public BulkResponse PostDocuments(string path)
@@ -43,7 +44,6 @@ namespace SearchLibrary
 
             var response = elastic.GetResponseOfQuery<Document>(queryContainer).Validate();
             return response.Hits.ToList().Select(x => x.Source.DocumentId).ToList();
-
         }
 
         private List<QueryContainer> MakeMatchQueryList(List<string> words)
