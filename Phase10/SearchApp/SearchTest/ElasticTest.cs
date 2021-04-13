@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+using System.Threading;
 using System.Linq;
 using System;
 using Xunit;
@@ -7,10 +9,15 @@ using System.Collections.Generic;
 
 namespace SearchTest
 {
-    public class ElasticTest
+    public class ElasticTest : IDisposable
     {
         private static string indexName = "test-index";
         private Elastic elastic = new Elastic(indexName, new Uri("http://localhost:9200"));
+
+        public ElasticTest()
+        {
+            elastic.CreateIndex<Document>();
+        }
 
         [Fact]
         public void CreateClientTest()
@@ -22,12 +29,8 @@ namespace SearchTest
         [Fact]
         public void IndexTest()
         {
-            elastic.CreateIndex<Document>();
             var response = elastic.Client.Indices.Exists(indexName).Validate();
             Assert.True(response.Exists);
-            elastic.DeleteIndex();
-            response = elastic.Client.Indices.Exists(indexName).Validate();
-            Assert.False(response.Exists);
         }
 
         [Fact]
@@ -42,22 +45,17 @@ namespace SearchTest
         [Fact]
         public void BulkTest()
         {
-            try
-            {
-                var documents = new List<Document> { new Document("1", "one"), new Document("2", "two"), new Document("3", "three") };
-                elastic.CreateIndex<Document>();
-                elastic.BulkIndex<Document>(documents, "DocumentId");
-                var response = elastic.GetResponseOfQuery<Document>(Elastic.MakeMatchQuery("one", "content"));
-                Assert.Equal("one", response.Hits.Single().Source.Content);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            finally
-            {
-                elastic.DeleteIndex();
-            }
+            var documents = new List<Document> { new Document("1", "one"), new Document("2", "two"), new Document("3", "three") };
+            elastic.BulkIndex<Document>(documents, "DocumentId");
+            elastic.Refresh();
+            var response = elastic.GetResponseOfQuery<Document>(Elastic.MakeMatchQuery("one", "content"));
+            Assert.Equal("one", response.Hits.ToList().Single().Source.Content);
+        }
+
+        public void Dispose()
+        {
+            elastic.DeleteIndex();
+            elastic.Refresh();
         }
     }
 }
