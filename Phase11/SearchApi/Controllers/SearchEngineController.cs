@@ -20,8 +20,7 @@ namespace SearchApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<string>> Search([FromQuery] string input)
         {
-            var query = new Query(input);
-
+            var query = new Query(input);   
             return Engine.Search(query.Normals, query.Pluses, query.Minuses);
         }
         
