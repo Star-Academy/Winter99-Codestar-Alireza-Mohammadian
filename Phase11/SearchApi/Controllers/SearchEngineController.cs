@@ -7,7 +7,7 @@ using System;
 namespace SearchApi.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("[Controller]")]
     public class SearchEngineController : ControllerBase
     {
         ISearchEngine Engine;
@@ -18,14 +18,15 @@ namespace SearchApi.Controllers
         }
 
         [HttpGet]
+        [Route("Search")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<string>> Search([FromQuery] string input)
         {
-            var query = new Query(input);   
+            var query = new Query(input);
             return Engine.Search(query.Normals, query.Pluses, query.Minuses);
         }
 
-        [HttpPost] 
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<Document> AddDocument([FromBody] Document document)
@@ -33,15 +34,15 @@ namespace SearchApi.Controllers
             if (document is null)
                 return BadRequest(new ArgumentNullException());
             Engine.PostDocument(document);
-            return Ok();
+            return CreatedAtAction(nameof(GetDocument), new { id = document.DocumentId }, document);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name=nameof(GetDocument))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<Document> GetDocument(string id)
         {
             return Ok(Engine.GetDocument(id));
         }
-        
+
     }
 }
