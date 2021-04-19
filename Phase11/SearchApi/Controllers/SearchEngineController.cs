@@ -35,6 +35,13 @@ namespace SearchApi.Controllers
             Engine.PostDocument(document);
             return Ok();
         }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<Document> GetDocument(string id)
+        {
+            return Ok(Engine.GetDocument(id));
+        }
         
     }
 }

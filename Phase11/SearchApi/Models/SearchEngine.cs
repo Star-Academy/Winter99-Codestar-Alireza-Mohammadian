@@ -8,8 +8,8 @@ namespace SearchApi.Models
     public class SearchEngine : ISearchEngine
     {
         public readonly Elastic elastic;
-        public string IndexName {get;}
-        public SearchEngine(string indexName ,Uri uri, bool indexCreated)
+        public string IndexName { get; }
+        public SearchEngine(string indexName, Uri uri, bool indexCreated)
         {
             IndexName = indexName;
             elastic = new Elastic(indexName, uri);
@@ -51,7 +51,8 @@ namespace SearchApi.Models
             return response.Hits.ToList().Select(x => x.Source.DocumentId).ToList();
         }
 
-        public Document GetDocument(string id){
+        public Document GetDocument(string id)
+        {
             return elastic.GetDocument<Document>(id);
         }
 

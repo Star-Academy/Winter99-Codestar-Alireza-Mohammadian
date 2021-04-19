@@ -11,6 +11,8 @@ namespace SearchApi.Models
 
         public IndexResponse PostDocument(Document document);
 
+        public Document GetDocument(string id);
+
         public List<QueryContainer> MakeMatchQueryList(List<string> words);
     }
 }
