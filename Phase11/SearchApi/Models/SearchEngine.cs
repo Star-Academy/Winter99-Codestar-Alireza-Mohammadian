@@ -19,7 +19,12 @@ namespace SearchApi.Models
 
         public BulkResponse PostDocuments(string path)
         {
-            return elastic.BulkIndex(new FileReader(path).ReadContent(), "DocumentId").Validate();
+            return elastic.BulkIndex(new FileReader(path).ReadContent(), nameof(Document.DocumentId)).Validate();
+        }
+
+        public IndexResponse PostDocument(Document document)
+        {
+            return elastic.Index(document, nameof(Document.DocumentId)).Validate();
         }
 
         public static ITypeMapping CreateMapping(TypeMappingDescriptor<Document> mappingDescriptor)
