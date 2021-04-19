@@ -9,6 +9,8 @@ namespace SearchApi.Models
 
         public List<string> Search(List<string> normals, List<string> pluses, List<string> minuses);
 
+        public IndexResponse PostDocument(Document document);
+
         public List<QueryContainer> MakeMatchQueryList(List<string> words);
     }
 }
