@@ -11,11 +11,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using SearchApi.Models;
 
 namespace SearchApi
 {
     public class Startup
     {
+        private const string ELASTIC_URI = "http://localhost:9200";
+        private const string INDEX_NAME = "documents";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -28,6 +31,7 @@ namespace SearchApi
         {
 
             services.AddControllers();
+            services.AddSingleton<ISearchEngine>(new SearchEngine(INDEX_NAME, new Uri(ELASTIC_URI), true));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SearchApi", Version = "v1" });
