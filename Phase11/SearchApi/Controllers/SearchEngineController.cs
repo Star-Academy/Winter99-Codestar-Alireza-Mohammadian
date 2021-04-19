@@ -23,6 +23,14 @@ namespace SearchApi.Controllers
             var query = new Query(input);   
             return Engine.Search(query.Normals, query.Pluses, query.Minuses);
         }
+
+        [HttpPost] 
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<Document> AddDocument([FromBody] Document document)
+        {
+            return Ok(document);
+        }
         
     }
 }

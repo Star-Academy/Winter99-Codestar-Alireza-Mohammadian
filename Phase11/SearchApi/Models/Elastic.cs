@@ -15,17 +15,17 @@ namespace SearchApi.Models
         public Elastic(string indexName, Uri uri)
         {
             IndexName = indexName;
-            Client = this.CreateClient(uri);            
+            Client = this.CreateClient(uri);
         }
 
-        public ElasticClient CreateClient(Uri uri) 
+        public ElasticClient CreateClient(Uri uri)
         {
             var connectionSettings = new ConnectionSettings(uri);
             connectionSettings.EnableDebugMode();
             return new ElasticClient(connectionSettings);
         }
 
-        public ISearchResponse<T> GetResponseOfQuery<T>(QueryContainer queryContainer, int size=20) where T : class
+        public ISearchResponse<T> GetResponseOfQuery<T>(QueryContainer queryContainer, int size = 20) where T : class
         {
             return Client.Search<T>(s => s.Index(IndexName).Query(q => queryContainer).Size(size));
         }
@@ -186,11 +186,12 @@ namespace SearchApi.Models
             return response;
         }
 
-        public ResponseBase DeleteIndex(){
+        public ResponseBase DeleteIndex()
+        {
             return Client.Indices.Delete(IndexName);
         }
 
-        public BulkResponse BulkIndex<T>(List<T> dataList , string idFieldName) where T : class
+        public BulkResponse BulkIndex<T>(List<T> dataList, string idFieldName) where T : class
         {
             var bulkDescriptor = new BulkDescriptor();
             foreach (var data in dataList)
@@ -203,6 +204,13 @@ namespace SearchApi.Models
             }
             var response = Client.Bulk(bulkDescriptor);
             return response;
+        }
+
+        public IndexResponse Index<T>(T document, string idFieldName) where T : class
+        {
+            return Client.Index<T>(document, x => x
+                .Index(IndexName)
+                .Id((string)document.GetType().GetProperty(idFieldName).GetValue(document)));
         }
 
         public RefreshResponse Refresh()
