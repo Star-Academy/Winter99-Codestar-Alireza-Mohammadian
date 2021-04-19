@@ -213,6 +213,11 @@ namespace SearchApi.Models
                 .Id((string)document.GetType().GetProperty(idFieldName).GetValue(document)));
         }
 
+        public T GetDocument<T>(string id) where T : class
+        {
+            return Client.Get<T>(id, g => g.Index(IndexName)).Source;
+        }
+
         public RefreshResponse Refresh()
         {
             return Client.Indices.Refresh(IndexName);

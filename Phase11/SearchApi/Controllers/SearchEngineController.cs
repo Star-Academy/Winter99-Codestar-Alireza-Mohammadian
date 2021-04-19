@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SearchApi.Models;
+using System;
 
 namespace SearchApi.Controllers
 {
@@ -29,7 +30,10 @@ namespace SearchApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<Document> AddDocument([FromBody] Document document)
         {
-            return Ok(document);
+            if (document is null)
+                return BadRequest(new ArgumentNullException());
+            Engine.PostDocument(document);
+            return Ok();
         }
         
     }

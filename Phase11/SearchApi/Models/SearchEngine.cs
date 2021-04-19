@@ -51,6 +51,10 @@ namespace SearchApi.Models
             return response.Hits.ToList().Select(x => x.Source.DocumentId).ToList();
         }
 
+        public Document GetDocument(string id){
+            return elastic.GetDocument<Document>(id);
+        }
+
         public List<QueryContainer> MakeMatchQueryList(List<string> words)
         {
             var list = new List<QueryContainer>();
