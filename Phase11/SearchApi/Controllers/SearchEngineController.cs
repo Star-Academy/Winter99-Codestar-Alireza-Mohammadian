@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SearchApi.Models;
 using System;
+using System.IO;
 
 namespace SearchApi.Controllers
 {
@@ -45,7 +46,7 @@ namespace SearchApi.Controllers
         {
             var document = Engine.GetDocument(id);
             if(document is null)
-                return NotFound();
+                return NotFound(new FileNotFoundException());
             return Ok(document);
         }
     }
