@@ -19,6 +19,7 @@ namespace SearchApi.Controllers
 
         [HttpGet]
         [Route("Search")]
+        [Route("")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<string>> Search([FromQuery] string input)
         {
