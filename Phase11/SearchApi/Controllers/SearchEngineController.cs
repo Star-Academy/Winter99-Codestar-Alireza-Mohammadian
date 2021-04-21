@@ -39,10 +39,13 @@ namespace SearchApi.Controllers
 
         [HttpGet("{id}", Name=nameof(GetDocument))]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Document> GetDocument(string id)
         {
-            return Ok(Engine.GetDocument(id));
+            var document = Engine.GetDocument(id);
+            if(document is null)
+                return NotFound();
+            return Ok(document);
         }
-
     }
 }
