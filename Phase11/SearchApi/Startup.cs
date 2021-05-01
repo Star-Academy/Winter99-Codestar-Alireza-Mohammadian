@@ -1,15 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using SearchApi.Models;
 
@@ -19,6 +13,7 @@ namespace SearchApi
     {
         private const string ELASTIC_URI = "http://localhost:9200";
         private const string INDEX_NAME = "documents";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -29,7 +24,7 @@ namespace SearchApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddCors();
             services.AddControllers();
             services.AddSingleton<ISearchEngine>(new SearchEngine(INDEX_NAME, new Uri(ELASTIC_URI), true));
             services.AddSwaggerGen(c =>
@@ -53,6 +48,8 @@ namespace SearchApi
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
             app.UseEndpoints(endpoints =>
             {
