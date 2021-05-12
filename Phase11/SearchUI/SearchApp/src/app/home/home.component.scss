@@ -19,3 +19,10 @@
   object-fit: cover;
   object-position: center;
 }
+
+.right-column {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
