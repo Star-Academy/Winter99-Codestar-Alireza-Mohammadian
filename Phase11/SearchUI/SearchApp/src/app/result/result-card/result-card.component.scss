@@ -1,0 +1,13 @@
+::ng-deep .mat-card {
+  background-color: transparent;
+  color: aliceblue;
+  font-family: Arial, Helvetica, sans-serif;
+  border-bottom: 1px solid darkgray;
+//   box-shadow: 0px 2px 1px 1px darkgray !important;
+  
+}
+
+::ng-deep .mat-card-header {
+    font-size: x-large;
+    margin-bottom: 0.5em;
+}

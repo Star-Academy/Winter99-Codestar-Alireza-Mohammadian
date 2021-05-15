@@ -26,3 +26,8 @@
   align-items: center;
   flex-direction: column;
 }
+
+::ng-deep.searchbar > .mat-form-field {
+  width: 500px;
+  height: 30px;
+}

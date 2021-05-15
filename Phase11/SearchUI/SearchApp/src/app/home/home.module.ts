@@ -4,7 +4,7 @@ import { HomeComponent } from './home.component';
 import { TitleComponent } from './title/title.component';
 import { SearchbarComponent } from './searchbar/searchbar.component';
 import { MatInputModule } from '@angular/material/input';
-import { MatButton, MatButtonModule } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 
@@ -23,7 +23,8 @@ import { FormsModule } from '@angular/forms';
     FormsModule
   ],
   exports: [
-    HomeComponent
+    HomeComponent,
+    SearchbarComponent
   ]
 })
 export class HomeModule { }

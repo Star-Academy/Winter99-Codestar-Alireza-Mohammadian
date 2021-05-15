@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-searchbar',
@@ -7,11 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SearchbarComponent implements OnInit {
 
+  @Input()
   public value = ''
 
-  constructor() { }
+  @Input()
+  public placeholder = ''
+
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
+  }
+
+  search(): void {
+    this.router.navigate(['/search'], { queryParams: {q: this.value}})
   }
 
 }
