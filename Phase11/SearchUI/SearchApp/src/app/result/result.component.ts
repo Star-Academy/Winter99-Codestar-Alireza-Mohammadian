@@ -11,22 +11,15 @@ import { DocumentsService } from './service/documents.service';
 export class ResultComponent implements OnInit {
 
   public query = '';
-  public documents : Document[] = [];
+  public documents: Document[] = [];
 
   constructor(private route: ActivatedRoute,
-              private service: DocumentsService) { }
+    private service: DocumentsService) { }
 
   async ngOnInit(): Promise<void> {
     this.route.queryParamMap.subscribe((params) => {
       this.query = params.get('q')!
     })
     this.documents = await this.service.getDocuments(this.query);
-    console.log(this.documents);
-    
   }
-
-  // public getDocuments() : Document[] {
-  //   return []
-  // }
-
 }

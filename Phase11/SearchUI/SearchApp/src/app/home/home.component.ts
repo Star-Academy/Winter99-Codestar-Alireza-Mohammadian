@@ -16,5 +16,4 @@ export class HomeComponent implements OnInit {
     this.index = Math.floor(Math.random() * 7)
     this.backgroundColor = this.BACKGROUND_COLORS[this.index]
   }
-
 }

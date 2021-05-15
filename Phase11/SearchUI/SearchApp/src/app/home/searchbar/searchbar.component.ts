@@ -22,5 +22,4 @@ export class SearchbarComponent implements OnInit {
   search(): void {
     this.router.navigate(['/search'], { queryParams: {q: this.value}})
   }
-
 }
