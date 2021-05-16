@@ -11,11 +11,11 @@ namespace SearchApi.Controllers
     [Route("[Controller]")]
     public class SearchEngineController : ControllerBase
     {
-        ISearchEngine Engine;
+        ISearchEngine engine;
 
         public SearchEngineController(ISearchEngine engine)
         {
-            Engine = engine;
+            this.engine = engine;
         }
 
         [HttpGet]
@@ -25,7 +25,7 @@ namespace SearchApi.Controllers
         public ActionResult<IEnumerable<string>> Search([FromQuery] string input)
         {
             var query = new Query(input);
-            return Engine.Search(query.Normals, query.Pluses, query.Minuses);
+            return engine.Search(query.normals, query.pluses, query.minuses);
         }
 
         [HttpPost]
@@ -35,8 +35,8 @@ namespace SearchApi.Controllers
         {
             if (document is null)
                 return BadRequest(new ArgumentNullException());
-            Engine.PostDocument(document);
-            return CreatedAtAction(nameof(GetDocument), new { id = document.DocumentId }, document);
+            engine.PostDocument(document);
+            return CreatedAtAction(nameof(GetDocument), new { id = document.documentId }, document);
         }
 
         [HttpGet("{id}", Name=nameof(GetDocument))]
@@ -44,7 +44,7 @@ namespace SearchApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Document> GetDocument(string id)
         {
-            var document = Engine.GetDocument(id);
+            var document = engine.GetDocument(id);
             if(document is null)
                 return NotFound(new FileNotFoundException());
             return Ok(document);

@@ -2,13 +2,13 @@ namespace SearchApi.Models
 {
     public class Document
     {
-        public string DocumentId { get; set; }
-        public string Content { get; set; }
+        public string documentId { get; set; }
+        public string content { get; set; }
 
         public Document(string documentId, string content)
         {
-            DocumentId = documentId;
-            Content = content;
+            this.documentId = documentId;
+            this.content = content;
         }
     }
 }

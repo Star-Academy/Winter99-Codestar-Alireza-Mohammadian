@@ -10,13 +10,13 @@ namespace SearchApi.Models
         public const string MINUS_PATTERN = @"-(\w+)";
         private const string SPACE_PATTERN = @"\s+";
 
-        public List<string> Normals { get; }
-        public List<string> Pluses { get; }
-        public List<string> Minuses { get; }
+        public List<string> normals { get; }
+        public List<string> pluses { get; }
+        public List<string> minuses { get; }
         public Query(string query){ 
-            Normals = FindPattern(" "+query , NORMAL_PATTERN);
-            Minuses = FindPattern(query , MINUS_PATTERN);
-            Pluses = FindPattern(query , PLUS_PATTERN);   
+            normals = FindPattern(" "+query , NORMAL_PATTERN);
+            minuses = FindPattern(query , MINUS_PATTERN);
+            pluses = FindPattern(query , PLUS_PATTERN);   
         }
         
         public static List<string> FindPattern(string query, string pattern)

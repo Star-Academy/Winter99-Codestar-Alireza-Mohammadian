@@ -9,13 +9,13 @@ namespace SearchApi.Models
 
     public class Elastic
     {
-        string IndexName { get; set; }
-        public ElasticClient Client { get; set; }
+        string indexName { get; set; }
+        public ElasticClient client { get; set; }
 
         public Elastic(string indexName, Uri uri)
         {
-            IndexName = indexName;
-            Client = this.CreateClient(uri);
+            this.indexName = indexName;
+            client = this.CreateClient(uri);
         }
 
         public ElasticClient CreateClient(Uri uri)
@@ -27,7 +27,7 @@ namespace SearchApi.Models
 
         public ISearchResponse<T> GetResponseOfQuery<T>(QueryContainer queryContainer, int size = 20) where T : class
         {
-            return Client.Search<T>(s => s.Index(IndexName).Query(q => queryContainer).Size(size));
+            return client.Search<T>(s => s.Index(indexName).Query(q => queryContainer).Size(size));
         }
         public static QueryContainer MakeFuzzyQuery(string query, string field, int fuzziness = -1)
         {
@@ -163,7 +163,7 @@ namespace SearchApi.Models
         public ISearchResponse<T> GetResponseOfAggs<T>(TermsAggregation termsAggregation) where T : class
         {
 
-            return Client.Search<T>(s => s.Index(IndexName).Aggregations(
+            return client.Search<T>(s => s.Index(indexName).Aggregations(
                 termsAggregation));
         }
         public static TermsAggregation MakeTermsAggQuery(string field, string name = "", bool keyword = false)
@@ -181,14 +181,14 @@ namespace SearchApi.Models
         public ResponseBase CreateIndex<T>(Func<IndexSettingsDescriptor, IPromise<IIndexSettings>> settingSelector = null,
             Func<TypeMappingDescriptor<T>, ITypeMapping> mapSelector = null) where T : class
         {
-            var response = Client.Indices.Create(IndexName,
+            var response = client.Indices.Create(indexName,
                 s => s.Settings(settingSelector).Map<T>(mapSelector));
             return response;
         }
 
         public ResponseBase DeleteIndex()
         {
-            return Client.Indices.Delete(IndexName);
+            return client.Indices.Delete(indexName);
         }
 
         public BulkResponse BulkIndex<T>(List<T> dataList, string idFieldName) where T : class
@@ -197,45 +197,45 @@ namespace SearchApi.Models
             foreach (var data in dataList)
             {
                 bulkDescriptor.Index<T>(x => x
-                    .Index(IndexName)
+                    .Index(indexName)
                     .Document(data)
                     .Id((string)data.GetType().GetProperty(idFieldName).GetValue(data))
                 );
             }
-            var response = Client.Bulk(bulkDescriptor);
+            var response = client.Bulk(bulkDescriptor);
             return response;
         }
 
         public IndexResponse Index<T>(T document, string idFieldName) where T : class
         {
-            return Client.Index<T>(document, x => x
-                .Index(IndexName)
+            return client.Index<T>(document, x => x
+                .Index(indexName)
                 .Id((string)document.GetType().GetProperty(idFieldName).GetValue(document)));
         }
 
         public T GetDocument<T>(string id) where T : class
         {
-            return Client.Get<T>(id, g => g.Index(IndexName)).Source;
+            return client.Get<T>(id, g => g.Index(indexName)).Source;
         }
 
         public RefreshResponse Refresh()
         {
-            return Client.Indices.Refresh(IndexName);
+            return client.Indices.Refresh(indexName);
         }
 
         public CatResponse<CatNodesRecord> GetCatNodes()
         {
-            return Client.Cat.Nodes();
+            return client.Cat.Nodes();
         }
         public CatResponse<CatIndicesRecord> GetCatIndices()
         {
-            return Client.Cat.Indices();
+            return client.Cat.Indices();
         }
 
         public ClusterHealthResponse GetClusterHealth(
             Func<ClusterHealthDescriptor, IClusterHealthRequest> healthSelector = null)
         {
-            return Client.Cluster.Health(IndexName, healthSelector);
+            return client.Cluster.Health(indexName, healthSelector);
         }
 
         public static void QueryResponsePrinter<T>(string queryType, ISearchResponse<T> response) where T : class

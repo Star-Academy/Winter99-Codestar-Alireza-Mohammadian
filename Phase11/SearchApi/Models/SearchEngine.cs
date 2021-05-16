@@ -8,10 +8,10 @@ namespace SearchApi.Models
     public class SearchEngine : ISearchEngine
     {
         public readonly Elastic elastic;
-        public string IndexName { get; }
+        public string indexName { get; }
         public SearchEngine(string indexName, Uri uri, bool indexCreated)
         {
-            IndexName = indexName;
+            this.indexName = indexName;
             elastic = new Elastic(indexName, uri);
             if (!indexCreated)
                 elastic.CreateIndex<Document>(mapSelector: CreateMapping).Validate();
@@ -19,19 +19,19 @@ namespace SearchApi.Models
 
         public BulkResponse PostDocuments(string path)
         {
-            return elastic.BulkIndex(new FileReader(path).ReadContent(), nameof(Document.DocumentId)).Validate();
+            return elastic.BulkIndex(new FileReader(path).ReadContent(), nameof(Document.documentId)).Validate();
         }
 
         public IndexResponse PostDocument(Document document)
         {
-            return elastic.Index(document, nameof(Document.DocumentId)).Validate();
+            return elastic.Index(document, nameof(Document.documentId)).Validate();
         }
 
         public static ITypeMapping CreateMapping(TypeMappingDescriptor<Document> mappingDescriptor)
         {
             return mappingDescriptor.Properties(d => d
                                         .Keyword(k => k
-                                           .Name(d => d.DocumentId)
+                                           .Name(d => d.documentId)
                                            .IgnoreAbove(256)
                                             ));
         }
@@ -48,7 +48,7 @@ namespace SearchApi.Models
                 );
 
             var response = elastic.GetResponseOfQuery<Document>(queryContainer).Validate();
-            return response.Hits.ToList().Select(x => x.Source.DocumentId).ToList();
+            return response.Hits.ToList().Select(x => x.Source.documentId).ToList();
         }
 
         public Document GetDocument(string id)
