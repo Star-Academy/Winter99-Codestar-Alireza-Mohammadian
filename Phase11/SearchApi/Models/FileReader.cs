@@ -6,7 +6,7 @@ namespace SearchApi.Models
 {
     public class FileReader
     {
-        public string path { get; set; }
+        public string path;
         public FileReader(string path)
         {
             this.path = path;
