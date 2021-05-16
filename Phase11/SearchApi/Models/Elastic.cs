@@ -31,112 +31,100 @@ namespace SearchApi.Models
         }
         public static QueryContainer MakeFuzzyQuery(string query, string field, int fuzziness = -1)
         {
-            QueryContainer fuzzyQuery = new FuzzyQuery
+            return new FuzzyQuery
             {
                 Field = field,
                 Value = query,
                 Fuzziness = fuzziness == -1 ? Fuzziness.Auto : Fuzziness.EditDistance(fuzziness)
             };
-            return fuzzyQuery;
         }
 
         public static QueryContainer MakeMatchQuery(string query, string field, int fuzziness = 0)
         {
-            QueryContainer matchQuery = new MatchQuery
+            return new MatchQuery
             {
                 Query = query,
                 Field = field,
                 Fuzziness = Fuzziness.EditDistance(fuzziness)
             };
-            return matchQuery;
         }
 
         public static QueryContainer MakeMultiMatchQuery(string query, string[] fields,
             int fuzziness = 1)
         {
-            QueryContainer multiMatchQuery = new MultiMatchQuery
+            return new MultiMatchQuery
             {
                 Query = query,
                 Fields = fields,
                 Fuzziness = Fuzziness.EditDistance(fuzziness)
             };
-            return multiMatchQuery;
         }
 
         public static QueryContainer MakeTermQuery(string query, string field, double boost = 1)
         {
-            QueryContainer termQuery = new TermQuery
+            return new TermQuery
             {
                 Field = field,
                 Value = query,
                 Boost = boost
             };
-            return termQuery;
         }
 
         public static QueryContainer MakeTermsQuery(string[] queries, string field, double boost = 1)
         {
-            QueryContainer termsQuery = new TermsQuery
+            return new TermsQuery
             {
                 Field = field,
                 Terms = queries,
                 Boost = boost
             };
-            return termsQuery;
         }
 
         public static QueryContainer MakeRangeQuery(string type, string gte, string lte,
             string field, double boost = 1)
         {
-            QueryContainer rangeQuery = null;
-            if (type.ToLower() == "long")
+            switch (type.ToLower())
             {
-                rangeQuery = new LongRangeQuery()
-                {
-                    Field = field,
-                    LessThan = long.Parse(lte),
-                    GreaterThan = long.Parse(gte),
-                    Boost = boost
-                };
-            }
-            else if (type.ToLower() == "date")
-            {
-                rangeQuery = new DateRangeQuery()
-                {
-                    Field = field,
-                    LessThan = DateMath.FromString(lte),
-                    GreaterThan = DateMath.FromString(gte),
-                    Boost = boost
-                };
-            }
-            else if (type.ToLower() == "term")
-            {
-                rangeQuery = new TermRangeQuery()
-                {
-                    Field = field,
-                    LessThan = lte,
-                    GreaterThan = gte,
-                    Boost = boost
-                };
-            }
-            else if (type.ToLower() == "numeric")
-            {
-                rangeQuery = new TermRangeQuery()
-                {
-                    Field = field,
-                    LessThan = lte,
-                    GreaterThan = gte,
-                    Boost = boost
-                };
-            }
+                case "long":
+                    return new LongRangeQuery()
+                    {
+                        Field = field,
+                        LessThan = long.Parse(lte),
+                        GreaterThan = long.Parse(gte),
+                        Boost = boost
+                    };
+                case "date":
+                    return new DateRangeQuery()
+                    {
+                        Field = field,
+                        LessThan = DateMath.FromString(lte),
+                        GreaterThan = DateMath.FromString(gte),
+                        Boost = boost
+                    };
+                case "term":
+                    return new TermRangeQuery()
+                    {
+                        Field = field,
+                        LessThan = lte,
+                        GreaterThan = gte,
+                        Boost = boost
+                    };
 
-            return rangeQuery;
+                default:
+                    return new TermRangeQuery()
+                    {
+                        Field = field,
+                        LessThan = lte,
+                        GreaterThan = gte,
+                        Boost = boost
+                    };
+            }
         }
 
         public static QueryContainer MakeBoolQuery(QueryContainer[] must = null, QueryContainer[] filter = null,
             QueryContainer[] should = null, QueryContainer[] mustNot = null, double boost = 1)
         {
-            QueryContainer boolQuery = new BoolQuery
+            return new BoolQuery
             {
                 Must = must,
                 Should = should,
@@ -144,13 +132,12 @@ namespace SearchApi.Models
                 MustNot = mustNot,
                 Boost = boost
             };
-            return boolQuery;
         }
 
         public static QueryContainer MakeGeoDistanceQuery(string distance, double latitude,
             double longitude, Field distanceField, double boost = 1)
         {
-            var geoDistanceQuery = new GeoDistanceQuery
+            return new GeoDistanceQuery
             {
                 Field = distanceField,
                 DistanceType = GeoDistanceType.Arc,
@@ -158,7 +145,6 @@ namespace SearchApi.Models
                 Distance = distance,
                 Boost = boost
             };
-            return geoDistanceQuery;
         }
         public ISearchResponse<T> GetResponseOfAggs<T>(TermsAggregation termsAggregation) where T : class
         {
@@ -170,20 +156,18 @@ namespace SearchApi.Models
         {
             if (name == "")
                 name = field;
-            TermsAggregation termsAggregation = new TermsAggregation(name)
+            return new TermsAggregation(name)
             {
                 Field = field + (keyword ? ".keyword" : "")
             };
-            return termsAggregation;
         }
 
 
         public ResponseBase CreateIndex<T>(Func<IndexSettingsDescriptor, IPromise<IIndexSettings>> settingSelector = null,
             Func<TypeMappingDescriptor<T>, ITypeMapping> mapSelector = null) where T : class
         {
-            var response = client.Indices.Create(indexName,
+            return client.Indices.Create(indexName,
                 s => s.Settings(settingSelector).Map<T>(mapSelector));
-            return response;
         }
 
         public ResponseBase DeleteIndex()
@@ -202,8 +186,7 @@ namespace SearchApi.Models
                     .Id((string)data.GetType().GetProperty(idFieldName).GetValue(data))
                 );
             }
-            var response = client.Bulk(bulkDescriptor);
-            return response;
+            return client.Bulk(bulkDescriptor);
         }
 
         public IndexResponse Index<T>(T document, string idFieldName) where T : class
