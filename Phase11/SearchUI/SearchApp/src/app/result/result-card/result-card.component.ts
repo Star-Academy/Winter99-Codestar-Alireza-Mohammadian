@@ -6,14 +6,9 @@ import { Document } from '../models/document';
   templateUrl: './result-card.component.html',
   styleUrls: ['./result-card.component.scss']
 })
-export class ResultCardComponent implements OnInit {
+export class ResultCardComponent {
 
   @Input()
   public document?: Document
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

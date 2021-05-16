@@ -6,13 +6,9 @@ import { Document } from '../models/document';
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.scss']
 })
-export class ResultsComponent implements OnInit {
+export class ResultsComponent {
 
   @Input()
   public documents: Document[] = []
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 }

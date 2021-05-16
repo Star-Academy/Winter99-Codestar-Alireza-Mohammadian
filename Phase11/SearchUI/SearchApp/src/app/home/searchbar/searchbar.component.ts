@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
   templateUrl: './searchbar.component.html',
   styleUrls: ['./searchbar.component.scss']
 })
-export class SearchbarComponent implements OnInit {
+export class SearchbarComponent  {
 
   @Input()
   public value = ''
@@ -15,9 +15,6 @@ export class SearchbarComponent implements OnInit {
   public placeholder = ''
 
   constructor(private router: Router) { }
-
-  ngOnInit(): void {
-  }
 
   search(): void {
     this.router.navigate(['/search'], { queryParams: {q: this.value}})
