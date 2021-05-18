@@ -1,0 +1,30 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  width: 90%;
+  height: 100px;
+  position: fixed;
+  top: 0;
+  overflow: hidden;
+  z-index: 1;
+  background-color: #1D2528;
+  & > img {
+    width: 150px;
+    height: 150px;
+    flex: 10%;
+  }
+}
+
+.searchbar {
+  flex: 90%;
+  height: 20px;
+  padding: 10px;
+  vertical-align: middle;
+  font-size: 20px;
+}
+
+::ng-deep.searchbar > .mat-form-field {
+  width: 90%;
+}

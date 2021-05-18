@@ -1,0 +1,18 @@
+.title {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.title header {
+  font-size: 60px;
+  font-family: Tahoma;
+  font-weight: bold;
+  color: aliceblue;
+  mix-blend-mode: difference;
+}
+.title img {
+  width: 200px;
+  height: 200px;
+}

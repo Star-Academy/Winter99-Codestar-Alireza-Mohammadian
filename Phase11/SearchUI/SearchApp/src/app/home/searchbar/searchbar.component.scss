@@ -1,0 +1,17 @@
+.searchbar {
+  color: ghostwhite !important;
+  font-size: x-large !important;
+  top: -2em;
+}
+
+::ng-deep.mat-form-field-label {
+  color: ghostwhite !important;
+}
+
+::ng-deep.mat-form-field-underline {
+  background-color: ghostwhite !important;
+}
+
+::ng-deep.mat-form-field-ripple {
+  background-color: ghostwhite !important;
+}
